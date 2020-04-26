@@ -34,7 +34,6 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/charleskawczynski/AutoPages.git",
+    repo = "github.com/charleskawczynski/AutoPages.jl.git",
     target = "build",
-    push_preview = true,
 )

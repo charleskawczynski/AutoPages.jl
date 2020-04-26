@@ -4,14 +4,14 @@ Automatically organize Documenter.jl pages, given a directory or an array of fil
 
 |||
 |---------------------:|:----------------------------------------------|
-| **Documentation**    | [![latest][docs-latest-img]][docs-latest-url] |
+| **Documentation**    | [![dev][docs-dev-img]][docs-dev-url]          |
 | **Code Coverage**    | [![codecov][codecov-img]][codecov-url]        |
 | **Bors**             | [![Bors enabled][bors-img]][bors-url]         |
 | **Travis Build**     | [![travis][travis-img]][travis-url]           |
 | **AppVeyor Build**   | [![appveyor][appveyor-img]][appveyor-url]     |
 
-[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-latest-url]: https://charleskawczynski.github.io/AutoPages.jl/latest/
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-dev-url]: https://charleskawczynski.github.io/AutoPages.jl/dev/
 
 [codecov-img]: https://codecov.io/gh/charleskawczynski/AutoPages.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/charleskawczynski/AutoPages.jl

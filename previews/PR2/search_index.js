@@ -1,0 +1,3 @@
+var documenterSearchIndex = {"docs":
+[{"location":"tutorials/home/#Home-1","page":"Home","title":"Home","text":"","category":"section"},{"location":"tutorials/ModelB/Tutorial4/#Tutorial4-1","page":"Tutorial4","title":"Tutorial4","text":"","category":"section"},{"location":"tutorials/ModelA/Tutorial1/#Tutorial1-1","page":"Tutorial1","title":"Tutorial1","text":"","category":"section"},{"location":"tutorials/ModelA/Tutorial2/#Tutorial2-1","page":"Tutorial2","title":"Tutorial2","text":"","category":"section"},{"location":"#AutoPages.jl-1","page":"Home","title":"AutoPages.jl","text":"","category":"section"},{"location":"tutorials/ModelB/Tutorial3/#Tutorial3-1","page":"Tutorial3","title":"Tutorial3","text":"","category":"section"}]
+}

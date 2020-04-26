@@ -17,14 +17,14 @@ using AutoPages: split_by_camel_case, gather_pages
     @test split_by_camel_case("DGMethods") == ["DG", "Methods"]
 end
 
-function tutorials_list(r)
+function tutorials_list(leading_path_sep)
   return String[
-  r * joinpath("path_to", "file1.jl"),
-  r * joinpath("path_to", "file2.jl"),
-  r * joinpath("path_to", "SubPath1", "SUBPath2", "file3.jl"),
-  r * joinpath("path_to", "SubPath1", "SUBPath2", "file4.jl"),
-  r * joinpath("path_to", "SubPath1", "SUBPath3", "file5.jl"),
-  r * joinpath("path_to", "SubPath1", "SUBPath3", "file6.jl"),
+  leading_path_sep * joinpath("path_to", "file1.jl"),
+  leading_path_sep * joinpath("path_to", "file2.jl"),
+  leading_path_sep * joinpath("path_to", "SubPath1", "SUBPath2", "file3.jl"),
+  leading_path_sep * joinpath("path_to", "SubPath1", "SUBPath2", "file4.jl"),
+  leading_path_sep * joinpath("path_to", "SubPath1", "SUBPath3", "file5.jl"),
+  leading_path_sep * joinpath("path_to", "SubPath1", "SUBPath3", "file6.jl"),
   ]
 end
 
@@ -32,7 +32,7 @@ end
     for r in ["", Base.Filesystem.path_separator]
         tutorials = tutorials_list(r)
 
-        arr = gather_pages(tutorials)
+        arr, _ = gather_pages(;filenames=tutorials)
 
         arr_base = arr[1].second
         @test arr[1].first == "path_to"
@@ -62,7 +62,7 @@ end
     for r in ["", Base.Filesystem.path_separator]
         tutorials = tutorials_list(r)
 
-        arr = gather_pages(tutorials; remove_first_level = true)
+        arr, _ = gather_pages(;filenames=tutorials, remove_first_level = true)
 
         arr_base = arr
 

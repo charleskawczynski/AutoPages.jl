@@ -1,0 +1,7 @@
+status = [
+  "continuous-integration/travis-ci/push",
+  "continuous-integration/appveyor/branch"
+]
+delete_merged_branches = true
+timeout_sec = 86400
+block_labels = [ "do-not-merge-yet" ]

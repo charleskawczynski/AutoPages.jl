@@ -1,5 +1,7 @@
 module AutoPages
 
+export gather_pages
+
 if Sys.isunix()
     const path_separator = '/'
 elseif Sys.iswindows()
@@ -52,17 +54,16 @@ split_by_camel_case(obj::AbstractString) =
     split(obj, r"((?<=\p{Ll})(?=\p{Lu})|(?<=\p{Lu})(?=\p{Lu}[^\p{Lu}]+))")
 
 """
-    pages_array!(
-        array::Array,
-        filename,
-        folders_with_only_files,
-        fullpath = dirname(filename))
+    gather_pages!(array::Array,
+                  filename,
+                  folders_with_only_files,
+                  fullpath = dirname(filename))
 
 Construct a nested array of `Pair`s whose
 keys mirror the given folder structure and
 values which point to the files.
 """
-function pages_array!(
+function gather_pages!(
     array::Array,
     filename::S,
     folders_with_only_files::Vector{S},
@@ -83,7 +84,7 @@ function pages_array!(
             push!(array, Pair(key, Any[]))
         end
         arr_next = array[end].second
-        pages_array!(arr_next,
+        gather_pages!(arr_next,
                      file_next,
                      folders_with_only_files,
                      transform_file,
@@ -93,30 +94,31 @@ function pages_array!(
 end
 
 """
-    pages_array(filenames::Array{AbstractString};
-                remove_first_level::Bool = false)
+    gather_pages(filenames::Array;
+                 remove_first_level::Bool = false,
+                 transform_file::Function=transform_file,
+                 transform_path::Function=transform_path)
 
 Construct a nested array of `Pair`s whose
 keys mirror the given folder structure and
 values which point to the files.
 
 This was specifically designed for
-Documenter.jl[^1]'s `page` array.
+Documenter.jl's `page` array.
 See the tests for an example.
 
- - `filenames` Array of `.md` files (relative path)
+ - `filenames` Array of `.md` files (using relative paths)
  - `remove_first_level` Bool indicating whether or not
                         to remove the root directory
                         (e.g., `generated/`)
+ - `transform_file` function to transform filename in navigation panel
+ - `transform_path` function to transform path     in navigation panel
 
-[^1]: https://github.com/JuliaDocs/Documenter.jl
 """
-function pages_array(
-    filenames::Array;
-    remove_first_level::Bool = false,
-    transform_file::Function=transform_file,
-    transform_path::Function=transform_path
-    )
+function gather_pages(filenames::Array;
+                      remove_first_level::Bool = false,
+                      transform_file::Function=transform_file,
+                      transform_path::Function=transform_path)
 
     filter!(x -> !(x == path_separator), filenames)
 
@@ -131,7 +133,7 @@ function pages_array(
 
     array = Any[]
     for file in filenames
-        pages_array!(array,
+        gather_pages!(array,
                      file,
                      folders_with_only_files,
                      transform_file,

@@ -1,5 +1,5 @@
 using Test
-using AutoPages: split_by_camel_case, pages_array
+using AutoPages: split_by_camel_case, gather_pages
 
 @testset "Split by CamelCase" begin
     @test split_by_camel_case("AlTeRnAtInG") == ["Al", "Te", "Rn", "At", "In", "G"]
@@ -32,7 +32,7 @@ end
     for r in ["", Base.Filesystem.path_separator]
         tutorials = tutorials_list(r)
 
-        arr = pages_array(tutorials)
+        arr = gather_pages(tutorials)
 
         arr_base = arr[1].second
         @test arr[1].first == "path_to"
@@ -58,11 +58,11 @@ end
     end
 end
 
-@testset "Pages Array Strip First Level" begin
+@testset "Pages Array Remove First Level" begin
     for r in ["", Base.Filesystem.path_separator]
         tutorials = tutorials_list(r)
 
-        arr = pages_array(tutorials; remove_first_level = true)
+        arr = gather_pages(tutorials; remove_first_level = true)
 
         arr_base = arr
 

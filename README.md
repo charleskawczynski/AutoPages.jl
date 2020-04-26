@@ -4,6 +4,7 @@ Automatically organize Documenter.jl pages, given a directory or an array of fil
 
 |||
 |---------------------:|:----------------------------------------------|
+| **Docs Build**       | [![docs build][docs-bld-img]][docs-bld-url]   |
 | **Documentation**    | [![dev][docs-dev-img]][docs-dev-url]          |
 | **Code Coverage**    | [![codecov][codecov-img]][codecov-url]        |
 | **Bors**             | [![Bors enabled][bors-img]][bors-url]         |
@@ -12,6 +13,9 @@ Automatically organize Documenter.jl pages, given a directory or an array of fil
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://charleskawczynski.github.io/AutoPages.jl/dev/
+
+[docs-bld-img]: https://github.com/charleskawczynski/AutoPages.jl/workflows/Documentation/badge.svg
+[docs-bld-url]: https://github.com/charleskawczynski/AutoPages.jl/actions?query=workflow%3ADocumentation
 
 [codecov-img]: https://codecov.io/gh/charleskawczynski/AutoPages.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/charleskawczynski/AutoPages.jl

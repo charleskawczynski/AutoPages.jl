@@ -124,6 +124,7 @@ See the tests for an example.
  - `transform_path` function to transform path     in navigation panel
  - `extension_filter` filter extensions
  - `transform_extension` transform extensions (e.g., ".jl" to ".md")
+                         a useful one is `AutoPages.replace_reverse(x, ".jl" => ".md"; count=1)`
  - `prepend_path` prepend path in pages
 """
 function gather_pages(;
@@ -133,7 +134,7 @@ function gather_pages(;
     transform_file::Function=transform_file,
     transform_path::Function=transform_path,
     extension_filter=x->endswith(x, ".md"),
-    transform_extension=x->replace_reverse(x, ".jl" => ".md"; count=1),
+    transform_extension=x->x,
     prepend_path="",
     )
 
@@ -150,9 +151,9 @@ function gather_pages(;
       filenames = map(x -> String(last(split(x, dirname(directory)))), filenames)
       filenames = map(x -> String(lstrip(x, path_separator)), filenames)
       filenames = map(x -> joinpath(prepend_path, x), filenames)
-      filenames = map(x -> transform_extension(x), filenames)
     end
 
+    filenames = map(x -> transform_extension(x), filenames)
     filter!(x -> !(x == path_separator), filenames)
     filenames = map(x -> String(lstrip(x, path_separator)), filenames)
     dirnames = collect(Set(dirname.(filenames)))

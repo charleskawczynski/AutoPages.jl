@@ -2,6 +2,14 @@ module AutoPages
 
 export gather_pages
 
+function replace_reverse(x, p...; count=Inf)
+  from = getproperty.(p, :first)
+  to = getproperty.(p, :second)
+  reversed_pairs = Pair.(reverse.(from), reverse.(to))
+  x_reversed = reverse(x)
+  return String(collect(Iterators.reverse(replace(x_reversed, reversed_pairs...; count=count))))
+end
+
 if Sys.isunix()
     const path_separator = '/'
 elseif Sys.iswindows()
@@ -85,11 +93,11 @@ function gather_pages!(
         end
         arr_next = array[end].second
         gather_pages!(arr_next,
-                     file_next,
-                     folders_with_only_files,
-                     transform_file,
-                     transform_path,
-                     fullpath)
+                      file_next,
+                      folders_with_only_files,
+                      transform_file,
+                      transform_path,
+                      fullpath)
     end
 end
 
@@ -107,44 +115,65 @@ This was specifically designed for
 Documenter.jl's `page` array.
 See the tests for an example.
 
+ - `directory` to get filenames from walk
  - `filenames` Array of `.md` files (using relative paths)
  - `remove_first_level` Bool indicating whether or not
                         to remove the root directory
                         (e.g., `generated/`)
  - `transform_file` function to transform filename in navigation panel
  - `transform_path` function to transform path     in navigation panel
-
+ - `extension_filter` filter extensions
+ - `transform_extension` transform extensions (e.g., ".jl" to ".md")
+ - `prepend_path` prepend path in pages
 """
-function gather_pages(filenames::Array;
-                      remove_first_level::Bool = false,
-                      transform_file::Function=transform_file,
-                      transform_path::Function=transform_path)
+function gather_pages(;
+    directory::Union{AbstractString,Nothing}=nothing,
+    filenames::Union{Array,Nothing}=nothing,
+    remove_first_level::Bool = false,
+    transform_file::Function=transform_file,
+    transform_path::Function=transform_path,
+    extension_filter=x->endswith(x, ".md"),
+    transform_extension=x->replace_reverse(x, ".jl" => ".md"; count=1),
+    prepend_path="",
+    )
+
+    if filenames === nothing && directory === nothing
+      throw(ArgumentError("Need filenames or directory keyword"))
+    end
+    if filenames ≠ nothing && directory ≠ nothing
+      throw(ArgumentError("Too many kwargs given"))
+    end
+
+    if directory ≠ nothing
+      filenames = [String(joinpath(r, f)) for (r, _, files) in Base.Filesystem.walkdir(directory) for f in files]
+      filenames = filter(extension_filter, filenames)
+      filenames = map(x -> String(last(split(x, dirname(directory)))), filenames)
+      filenames = map(x -> String(lstrip(x, path_separator)), filenames)
+      filenames = map(x -> joinpath(prepend_path, x), filenames)
+      filenames = map(x -> transform_extension(x), filenames)
+    end
 
     filter!(x -> !(x == path_separator), filenames)
-
     filenames = map(x -> String(lstrip(x, path_separator)), filenames)
-
     dirnames = collect(Set(dirname.(filenames)))
 
-    # TODO: Can this be improved?
+    # TODO: Might be able to improve performance here
     dirnames = [x for x in dirnames if !any(occursin(x, y) && !(x == y) for y in dirnames)]
-
     folders_with_only_files = basename.(dirnames)
-
     array = Any[]
     for file in filenames
         gather_pages!(array,
-                     file,
-                     folders_with_only_files,
-                     transform_file,
-                     transform_path)
+                      file,
+                      folders_with_only_files,
+                      transform_file,
+                      transform_path)
     end
 
     if remove_first_level
         array = array[1].second
     end
 
-    return array
+    return array, filenames
 end
 
 end

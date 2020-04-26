@@ -1,0 +1,3 @@
+[deps]
+AutoPages = "a027c030-dba8-4562-b3fb-d6cc94360871"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"

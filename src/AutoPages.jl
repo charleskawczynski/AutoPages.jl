@@ -2,12 +2,16 @@ module AutoPages
 
 export gather_pages
 
-function replace_reverse(x, p...; count=Inf)
+function replace_reverse(x, p...; count::Union{Integer,Nothing}=nothing)
   from = getproperty.(p, :first)
   to = getproperty.(p, :second)
   reversed_pairs = Pair.(reverse.(from), reverse.(to))
   x_reversed = reverse(x)
-  return String(collect(Iterators.reverse(replace(x_reversed, reversed_pairs...; count=count))))
+  if count==nothing
+    return String(collect(Iterators.reverse(replace(x_reversed, reversed_pairs...))))
+  else
+    return String(collect(Iterators.reverse(replace(x_reversed, reversed_pairs...; count=count))))
+  end
 end
 
 if Sys.isunix()

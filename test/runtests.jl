@@ -1,5 +1,5 @@
 using Test
-using AutoPages: split_by_camel_case, gather_pages
+using AutoPages: split_by_camel_case, gather_pages, replace_reverse
 
 @testset "Split by CamelCase" begin
     @test split_by_camel_case("AlTeRnAtInG") == ["Al", "Te", "Rn", "At", "In", "G"]
@@ -15,6 +15,12 @@ using AutoPages: split_by_camel_case, gather_pages
     @test split_by_camel_case("LowercasethenUPPERCASE") == ["Lowercasethen", "UPPERCASE"]
 
     @test split_by_camel_case("DGMethods") == ["DG", "Methods"]
+end
+
+@testset "Replace reverse" begin
+    @test replace_reverse("abc_abc", "a"=>"x"; count=1) == "abc_xbc"
+    @test replace_reverse("abc_abc", "a"=>"x"; count=2) == "xbc_xbc"
+    @test replace_reverse("abc_abc", "a"=>"x") == "xbc_xbc"
 end
 
 function tutorials_list(leading_path_sep)

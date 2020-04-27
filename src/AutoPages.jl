@@ -149,13 +149,12 @@ function gather_pages(;
       filenames = [String(joinpath(r, f)) for (r, _, files) in Base.Filesystem.walkdir(directory) for f in files]
       filenames = filter(extension_filter, filenames)
       filenames = map(x -> String(last(split(x, dirname(directory)))), filenames)
-      filenames = map(x -> String(lstrip(x, path_separator)), filenames)
-      filenames = map(x -> joinpath(prepend_path, x), filenames)
     end
 
     filenames = map(x -> transform_extension(x), filenames)
     filter!(x -> !(x == path_separator), filenames)
     filenames = map(x -> String(lstrip(x, path_separator)), filenames)
+    filenames = map(x -> joinpath(prepend_path, x), filenames)
     dirnames = collect(Set(dirname.(filenames)))
 
     # TODO: Might be able to improve performance here

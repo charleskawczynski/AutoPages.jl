@@ -38,22 +38,35 @@ From the Julia Pkg manager:
 
 ## Usage
 
-This package was designed with the intention to be used in `makedocs` in [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl). For example, if you have a folder of [Literate.jl](https://github.com/fredrikekre/Literate.jl) examples in `MyPkg/src/tutorials`, you can use `AutoPages.jl`'s `gather_pages` to create the nested array of `Pair`'s:
+This package was designed to provide automation tools for the `pages` keyword in [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl)'s `makedocs` method. Our [Tutorials](https://charleskawczynski.github.io/AutoPages.jl/dev/tutorials/home/) are collected with this package, which was configured to be an example itself:
 
 ```julia
-using AutoPages: gather_pages
+using Documenter
+using AutoPages
+using AutoPages: gather_pages, replace_reverse
 
+tutorials_dir = joinpath(@__DIR__, "..", "tutorials") # tutorials directory
+mkpath(tutorials_dir)
 tutorials, tutorials_list = gather_pages(;
-  directory=joinpath(@__DIR__, "..", "tutorials"),
+  directory=tutorials_dir,
   extension_filter=x->endswith(x, ".jl"),
+  transform_extension=x->replace_reverse(x, ".jl" => ".md"; count=1),
   remove_first_level=true)
 
 makedocs(
     sitename = "AutoPages",
-    format = format,
+    format = Documenter.HTML(
+        prettyurls = get(ENV, "CI", nothing) == "true",
+        collapselevel = 1,
+        ),
     clean = true,
     modules = [Documenter, AutoPages],
     pages = Any["Home" => "index.md",
                 "Tutorials" => tutorials],
+)
+
+deploydocs(
+    repo = "github.com/charleskawczynski/AutoPages.jl.git",
+    target = "build",
 )
 ```

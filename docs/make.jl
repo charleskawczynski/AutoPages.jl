@@ -1,6 +1,6 @@
 using Documenter
 using AutoPages
-using AutoPages: gather_pages, replace_reverse, transform_file
+using AutoPages: gather_pages, replace_reverse, transform_page
 
 tutorials_dir = joinpath(@__DIR__, "..", "tutorials") # tutorials directory
 mkpath(tutorials_dir)
@@ -15,7 +15,7 @@ tutorials, tutorials_list = gather_pages(;
 #     mkpath(joinpath(@__DIR__,"src",dirname(tutorial)))
 # end
 # for tutorial in tutorials_list
-#     title = transform_file(basename(tutorial))
+#     title = transform_page(basename(tutorial))
 #     open(joinpath(@__DIR__,"src",tutorial), "w") do io
 #     print(io, "# $(title)")
 #     end

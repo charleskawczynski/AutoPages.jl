@@ -10,17 +10,17 @@ tutorials, tutorials_list = gather_pages(;
   transform_extension=x->replace_reverse(x, ".jl" => ".md"; count=1),
   remove_first_level=true)
 
-#### Let's suppose we've used Literate to generate markdown:
-for tutorial in tutorials_list
-    mkpath(joinpath(@__DIR__,"src",dirname(tutorial)))
-end
-for tutorial in tutorials_list
-    title = transform_file(basename(tutorial))
-    open(joinpath(@__DIR__,"src",tutorial), "w") do io
-    print(io, "# $(title)")
-    end
-end
-####
+# #### Let's suppose we've used Literate to generate markdown:
+# for tutorial in tutorials_list
+#     mkpath(joinpath(@__DIR__,"src",dirname(tutorial)))
+# end
+# for tutorial in tutorials_list
+#     title = transform_file(basename(tutorial))
+#     open(joinpath(@__DIR__,"src",tutorial), "w") do io
+#     print(io, "# $(title)")
+#     end
+# end
+# ####
 
 format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true",
